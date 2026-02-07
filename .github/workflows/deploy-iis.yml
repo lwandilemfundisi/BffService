@@ -25,6 +25,7 @@ jobs:
         run: dotnet publish -c Release -o published
 
       - name: Deploy to IIS
+        shell: powershell
         run: |
           $source = "$(System.DefaultWorkingDirectory)/published/*"
           $destination = "C:\inetpub\wwwroot\online-ticket-sales-bff"
