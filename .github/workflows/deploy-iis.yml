@@ -27,6 +27,7 @@ jobs:
       - name: Deploy to IIS
         shell: powershell
         run: |
-          $source = "$(System.DefaultWorkingDirectory)/published/*"
+          $workingDir = $env:SYSTEM_DEFAULTWORKINGDIRECTORY
+          $source = "$(workingDir)/published/*"
           $destination = "C:\inetpub\wwwroot\online-ticket-sales-bff"
           Copy-Item -Path $source -Destination $destination -Recurse -Force
