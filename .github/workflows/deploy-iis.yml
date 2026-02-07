@@ -25,8 +25,7 @@ jobs:
         run: dotnet publish -c Release -o published
 
       - name: Deploy to IIS
-        shell: powershell
         run: |
-          $source = "$env:SYSTEM_DEFAULTWORKINGDIRECTORY/published/*"
-          $destination = "C:\inetpub\wwwroot\online-ticket-sales-bff"
-          Copy-Item -Path $source -Destination $destination -Recurse -Force
+          Remove-Item -Path "C:\inetpub\wwwroot\online-ticket-sales-bff\*" -Recurse -Force
+          Copy-Item -Path "published\*" -Destination "C:\inetpub\wwwroot\online-ticket-sales-bff\" -Recurse -Force
+        shell: powershell
