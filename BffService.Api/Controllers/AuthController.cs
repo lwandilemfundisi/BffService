@@ -10,6 +10,7 @@ namespace BffService.Api.Controllers
     public class AuthController : ControllerBase
     {
         [HttpGet]
+        [Route("login")]
         public IActionResult Login(string returnUrl)
         {
             var authProps = new AuthenticationProperties
@@ -21,6 +22,7 @@ namespace BffService.Api.Controllers
         }
 
         [HttpPost]
+        [Route("logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
