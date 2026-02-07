@@ -39,7 +39,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddOpenIdConnect(options => 
 {
-    options.Authority = "https://localhost:5001/";
+    options.Authority = "https://localhost:83/";
     options.ClientId = "OnlineTicketSalesBff";
     options.ClientSecret = "secret";
     options.ResponseType = OpenIdConnectResponseType.Code;
