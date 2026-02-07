@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include=".github\workflows\deploy-iis.yml" />
     <None Include="web.config" />
   </ItemGroup>
 
