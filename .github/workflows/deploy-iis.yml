@@ -24,8 +24,21 @@ jobs:
       - name: Publish application
         run: dotnet publish -c Release -o published
 
+      - name: Stop IIS
+        run: |
+          Import-Module WebAdministration
+          Stop-WebAppPool -Name "OnlineTicketSalesBff"
+          Stop-Website -Name "OnlineTicketSalesBff"
+
       - name: Deploy to IIS
         run: |
           Remove-Item -Path "C:\inetpub\wwwroot\online-ticket-sales-bff\*" -Recurse -Force
           Copy-Item -Path "published\*" -Destination "C:\inetpub\wwwroot\online-ticket-sales-bff\" -Recurse -Force
+        shell: powershell
+
+      - name: Start IIS
+        run: |
+          Import-Module WebAdministration
+          Start-WebAppPool -Name "OnlineTicketSalesBff"
+          Start-Website -Name "OnlineTicketSalesBff"
         shell: powershell
