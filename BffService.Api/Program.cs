@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,13 @@ builder.Services.AddOpenApi();
 builder.Services
     .AddBff()
     .AddRemoteApis();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "My BFF API", Version = "v1" });
+    // Optional: Add security definitions if your API uses authentication (e.g., JWT Bearer)
+});
 
 builder.Services.AddAuthentication(options => 
 {
@@ -41,6 +49,14 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    // Optional: set the UI at the app's root
+    // options.RoutePrefix = string.Empty; 
+});
 
 app.UseForwardedHeaders(new ForwardedHeadersOptions 
 {
