@@ -41,7 +41,7 @@ builder.Services.AddAuthentication(options =>
 {
     options.Authority = "http://localhost:84/realms/OnlineTicketSalesRealm/";
     options.ClientId = "OnlineTicketSalesBff";
-    options.ClientSecret = "5kXXJJzPU7TMBbiScj7W0Y0DaAozc44R";
+    options.ClientSecret = "nluXYrk1ECM08fYYq9HOY1TBPPUaGXME";
     options.ResponseType = OpenIdConnectResponseType.Code;
     options.SaveTokens = true;
 });
