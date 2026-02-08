@@ -68,11 +68,10 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
-app.UseAuthentication();
-app.UseBff();
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseBff();
 app.MapBffManagementEndpoints();
 app.MapRemoteBffApiEndpoint("/bff/events", new Uri("http://localhost:25964/")).WithAccessToken();
 app.MapControllers();
