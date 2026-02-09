@@ -39,7 +39,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddOpenIdConnect(options => 
 {
-    options.Authority = "http://localhost:8080/realms/OnlineTicketSalesRealm";
+    options.Authority = "https://localhost:8443/realms/OnlineTicketSalesRealm";
     options.ClientId = "OnlineTicketSalesBff";
     options.ClientSecret = "nluXYrk1ECM08fYYq9HOY1TBPPUaGXME";
     options.ResponseType = OpenIdConnectResponseType.Code;
