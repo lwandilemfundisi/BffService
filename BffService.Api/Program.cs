@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services
-    .AddBff()
+    .AddBff(opts=> opts.ManagementBasePath = "/bff")
     .AddRemoteApis();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -47,6 +47,11 @@ builder.Services.AddAuthentication(options =>
     options.RequireHttpsMetadata = false;
     options.GetClaimsFromUserInfoEndpoint = true;
     options.CallbackPath = "/signin-oidc";
+
+    options.Scope.Clear();
+    options.Scope.Add("openid");
+    options.Scope.Add("profile");
+    options.Scope.Add("email");
 });
 
 builder.Services.AddAuthorization();
@@ -72,10 +77,11 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 app.UseAuthentication();
-app.UseAuthorization();
 app.UseBff();
+app.UseAuthorization();
+
 app.MapBffManagementEndpoints();
-app.MapRemoteBffApiEndpoint("/bff/events", new Uri("http://localhost:25964/")).WithAccessToken();
+//app.MapRemoteBffApiEndpoint("/bff/events", new Uri("http://localhost:25964/")).WithAccessToken();
 app.MapControllers();
 
 app.Run();
