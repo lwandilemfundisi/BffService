@@ -44,7 +44,7 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = "nluXYrk1ECM08fYYq9HOY1TBPPUaGXME";
     options.ResponseType = OpenIdConnectResponseType.Code;
     options.SaveTokens = true;
-    options.RequireHttpsMetadata = false;
+    options.RequireHttpsMetadata = true;
     options.GetClaimsFromUserInfoEndpoint = true;
     options.CallbackPath = "/signin-oidc";
 
