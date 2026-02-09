@@ -37,7 +37,7 @@ builder.Services.AddAuthentication(options =>
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 })
-.AddOpenIdConnect(options => 
+.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => 
 {
     options.Authority = "https://localhost:8443/realms/OnlineTicketSalesRealm";
     options.ClientId = "OnlineTicketSalesBff";
