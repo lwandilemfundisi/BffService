@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BffService.Api.Controllers
@@ -28,6 +29,18 @@ namespace BffService.Api.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("user")]
+        [Authorize]
+        public IActionResult GetUser()
+        {
+            return Ok(new
+                {
+                    Name = User.Identity.Name,
+                    Claims = User.Claims.Select(c => new { c.Type, c.Value })
+                });
         }
     }
 }
