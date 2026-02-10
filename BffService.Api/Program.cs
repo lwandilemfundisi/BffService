@@ -69,23 +69,22 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost
 });
-
-app.UseSwagger();
-app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-    // Optional: set the UI at the app's root
-    // options.RoutePrefix = string.Empty; 
-});
-
-
 app.UsePathBase("/bff");
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+//app.UseSwagger();
+//app.UseSwaggerUI(options =>
+//{
+//    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+//    // Optional: set the UI at the app's root
+//    // options.RoutePrefix = string.Empty; 
+//});
+
+//// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+//    app.MapOpenApi();
+//}
+app.UseRouting();
 app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
