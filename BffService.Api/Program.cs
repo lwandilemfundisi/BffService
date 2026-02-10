@@ -46,7 +46,7 @@ builder.Services.AddAuthentication(options =>
     options.SaveTokens = true;
     options.RequireHttpsMetadata = true;
     options.GetClaimsFromUserInfoEndpoint = true;
-    options.CallbackPath = "/bff/signin-oidc";
+    options.CallbackPath = "/signin-oidc";
     options.SignedOutCallbackPath = "/bff/signout-callback-oidc";
 
     options.Scope.Clear();
