@@ -47,7 +47,7 @@ builder.Services.AddAuthentication(options =>
     options.RequireHttpsMetadata = true;
     options.GetClaimsFromUserInfoEndpoint = true;
     options.CallbackPath = "/signin-oidc";
-    options.SignedOutCallbackPath = "/bff/signout-callback-oidc";
+    options.SignedOutCallbackPath = "/signout-callback-oidc";
 
     options.Scope.Clear();
     options.Scope.Add("openid");
