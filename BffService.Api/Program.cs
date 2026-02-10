@@ -57,8 +57,18 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
-var app = builder.Build();
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
+    options.KnownIPNetworks.Clear(); // Loopback by default, this clears that restriction
+    options.KnownProxies.Clear();
+});
 
+var app = builder.Build();
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost
+});
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>
@@ -68,10 +78,7 @@ app.UseSwaggerUI(options =>
     // options.RoutePrefix = string.Empty; 
 });
 
-app.UseForwardedHeaders(new ForwardedHeadersOptions 
-{
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-});
+
 app.UsePathBase("/bff");
 
 // Configure the HTTP request pipeline.
