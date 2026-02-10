@@ -9,7 +9,19 @@ using Microsoft.OpenApi;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        name: "enableCors",
+        builder =>
+        {
+            builder
+            .WithOrigins("https://localhost:444")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+        });
+});
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -71,20 +83,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 app.UsePathBase("/bff");
 
-//app.UseSwagger();
-//app.UseSwaggerUI(options =>
-//{
-//    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-//    // Optional: set the UI at the app's root
-//    // options.RoutePrefix = string.Empty; 
-//});
-
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.MapOpenApi();
-//}
 app.UseRouting();
+app.UseCors("enableCors");
 app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
