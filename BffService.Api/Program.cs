@@ -46,7 +46,8 @@ builder.Services.AddAuthentication(options =>
     options.SaveTokens = true;
     options.RequireHttpsMetadata = true;
     options.GetClaimsFromUserInfoEndpoint = true;
-    options.CallbackPath = "/signin-oidc";
+    options.CallbackPath = "/bff/signin-oidc";
+    options.SignedOutCallbackPath = "/bff/signout-callback-oidc";
 
     options.Scope.Clear();
     options.Scope.Add("openid");
@@ -57,6 +58,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 var app = builder.Build();
+
 
 app.UseSwagger();
 app.UseSwaggerUI(options =>
@@ -70,6 +72,7 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
+app.UsePathBase("/bff");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
