@@ -28,6 +28,7 @@ builder.Services.AddAuthentication(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.Path = "/";
 })
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => 
 {
