@@ -9,32 +9,12 @@ using Microsoft.OpenApi;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(
-        name: "enableCors",
-        builder =>
-        {
-            builder
-            .WithOrigins("https://localhost:444")
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
-        });
-});
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services
     .AddBff(opts=> opts.ManagementBasePath = "/bff")
     .AddRemoteApis();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "My BFF API", Version = "v1" });
-    // Optional: Add security definitions if your API uses authentication (e.g., JWT Bearer)
-});
 
 builder.Services.AddAuthentication(options => 
 {
@@ -72,7 +52,7 @@ builder.Services.AddAuthorization();
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost;
-    options.KnownIPNetworks.Clear(); // Loopback by default, this clears that restriction
+    options.KnownIPNetworks.Clear();
     options.KnownProxies.Clear();
 });
 
@@ -81,7 +61,6 @@ app.UseForwardedHeaders();
 app.UsePathBase("/bff");
 
 app.UseRouting();
-app.UseCors("enableCors");
 app.UseAuthentication();
 app.UseBff();
 app.UseAuthorization();
