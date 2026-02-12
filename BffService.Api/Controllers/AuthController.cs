@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
+using System.Text;
 
 namespace BffService.Api.Controllers
 {
@@ -38,7 +40,7 @@ namespace BffService.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserAsync()
         {
-            if (await IsTokenActive(User.Claims.FirstOrDefault(c => c.Type == "access_token")?.Value) == false)
+            if (await IsTokenActive())
             {
                 return Unauthorized();
             }
@@ -49,15 +51,16 @@ namespace BffService.Api.Controllers
             });
         }
 
-        public async Task<bool> IsTokenActive(string accessToken)
+        public async Task<bool> IsTokenActive()
         {
             var introspectionClient = _httpClientFactory.CreateClient();
             var introspectionRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:8443/realms/OnlineTicketSalesRealm/protocol/openid-connect/token/introspect");
+            var authToken = Convert.ToBase64String(Encoding.ASCII.GetBytes("OnlineTicketSalesBff:nluXYrk1ECM08fYYq9HOY1TBPPUaGXME"));
+            introspectionClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authToken);
+
             introspectionRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                { "token", accessToken },
-                { "client_id", "OnlineTicketSalesBff" },
-                { "client_secret", "nluXYrk1ECM08fYYq9HOY1TBPPUaGXME" }
+                { "token", authToken }
             });
             var response = await introspectionClient.SendAsync(introspectionRequest);
             if (!response.IsSuccessStatusCode)
