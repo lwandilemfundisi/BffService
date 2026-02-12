@@ -56,8 +56,8 @@ namespace BffService.Api.Controllers
             introspectionRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 { "token", accessToken },
-                { "client_id", "your-client-id" },
-                { "client_secret", "your-client-secret" }
+                { "client_id", "OnlineTicketSalesBff" },
+                { "client_secret", "nluXYrk1ECM08fYYq9HOY1TBPPUaGXME" }
             });
             var response = await introspectionClient.SendAsync(introspectionRequest);
             if (!response.IsSuccessStatusCode)
