@@ -1,5 +1,7 @@
+using BffService.Api.Helpers;
 using Duende.Bff;
 using Duende.Bff.Yarp;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -22,13 +24,31 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
 
 })
-.AddCookie(options => 
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => 
 {
     options.Cookie.Name = "__Host-bff";
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     options.Cookie.Path = "/";
+
+    options.Events.OnValidatePrincipal = async context =>
+    {
+        var accessToken = await context.HttpContext.GetTokenAsync("access_token");
+        if (string.IsNullOrEmpty(accessToken))
+        {
+            context.RejectPrincipal();
+            await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return;
+        }
+
+        var isActive = await CookiesHepler.IsTokenActive(accessToken);
+        if (!isActive)
+        {
+            context.RejectPrincipal();
+            await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        }
+    };
 })
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => 
 {
