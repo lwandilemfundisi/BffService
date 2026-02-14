@@ -26,7 +26,7 @@ namespace BffService.Api.Controllers
             return Challenge(authProps, OpenIdConnectDefaults.AuthenticationScheme);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("logout")]
         public async Task<IActionResult> Logout()
         {
