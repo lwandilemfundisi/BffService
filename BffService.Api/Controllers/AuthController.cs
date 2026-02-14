@@ -40,7 +40,8 @@ namespace BffService.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserAsync()
         {
-            if (await IsTokenActive())
+            string accessToken = await HttpContext.GetTokenAsync("access_token");
+            if (!await IsTokenActive(accessToken))
             {
                 return Unauthorized();
             }
@@ -51,7 +52,7 @@ namespace BffService.Api.Controllers
             });
         }
 
-        public async Task<bool> IsTokenActive()
+        public async Task<bool> IsTokenActive(string accessToken)
         {
             var introspectionClient = _httpClientFactory.CreateClient();
             var introspectionRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:8443/realms/OnlineTicketSalesRealm/protocol/openid-connect/token/introspect");
@@ -60,7 +61,7 @@ namespace BffService.Api.Controllers
 
             introspectionRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                { "token", authToken }
+                { "token", accessToken }
             });
             var response = await introspectionClient.SendAsync(introspectionRequest);
             if (!response.IsSuccessStatusCode)
