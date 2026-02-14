@@ -31,11 +31,8 @@ namespace BffService.Api.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme, new AuthenticationProperties
-            {
-                RedirectUri = "/"
-            });
-            return Ok();
+            await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+            return Redirect("/home");
         }
 
         [HttpGet]
