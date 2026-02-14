@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using BffService.Api.Helpers;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
@@ -40,6 +41,12 @@ namespace BffService.Api.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserAsync()
         {
+            string accessToken = await HttpContext.GetTokenAsync("access_token");
+            if (!await CookiesHepler.IsTokenActive(accessToken))
+            {
+                return Unauthorized();
+            }
+
             return Ok(new
             {
                 Claims = User.Claims.Select(c => new { c.Type, c.Value })

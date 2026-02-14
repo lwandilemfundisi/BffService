@@ -33,44 +33,6 @@ builder.Services.AddAuthentication(options =>
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     options.Cookie.Path = "/";
-
-    options.Events.OnValidatePrincipal = async context =>
-    {
-        using (FileStream fs = File.Create("C:\\MyLogs\\Bff\\cookie_validation_log.txt"))
-        {
-            var accessToken = await context.HttpContext.GetTokenAsync("access_token");
-            var data = Encoding.UTF8.GetBytes($"Validating cookie at {DateTime.UtcNow}, Access Token: {accessToken}\n");
-            fs.Write(data, 0, data.Length);
-            if (string.IsNullOrEmpty(accessToken))
-            {
-                data = Encoding.UTF8.GetBytes("No access token found in cookie.\n");
-                fs.Write(data, 0, data.Length);
-                context.RejectPrincipal();
-                data = Encoding.UTF8.GetBytes("Rejecting principal due to missing access token.\n");
-                fs.Write(data, 0, data.Length);
-                await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                data = Encoding.UTF8.GetBytes("Signed out user due to missing access token.\n");
-                fs.Write(data, 0, data.Length);
-                return;
-            }
-
-            data = Encoding.UTF8.GetBytes("Access token found, validating with introspection endpoint.\n");
-            fs.Write(data, 0, data.Length);
-            var isActive = await CookiesHepler.IsTokenActive(accessToken);
-            if (!isActive)
-            {
-                data = Encoding.UTF8.GetBytes("Access token is not active, rejecting principal.\n");
-                fs.Write(data, 0, data.Length);
-                context.RejectPrincipal();
-                    data = Encoding.UTF8.GetBytes("Rejecting principal due to inactive access token.\n");
-                    fs.Write(data, 0, data.Length);
-                await context.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                data = Encoding.UTF8.GetBytes("Signed out user due to inactive access token.\n");
-                fs.Write(data, 0, data.Length);
-            }
-
-        }
-    };
 })
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => 
 {
