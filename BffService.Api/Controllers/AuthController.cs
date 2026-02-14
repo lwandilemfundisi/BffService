@@ -32,7 +32,7 @@ namespace BffService.Api.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
-            return Redirect("/home");
+            return Redirect("/");
         }
 
         [HttpGet]
