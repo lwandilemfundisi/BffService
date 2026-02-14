@@ -44,6 +44,8 @@ namespace BffService.Api.Controllers
             string accessToken = await HttpContext.GetTokenAsync("access_token");
             if (!await CookiesHepler.IsTokenActive(accessToken))
             {
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
                 return Unauthorized();
             }
 
