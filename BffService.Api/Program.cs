@@ -36,7 +36,7 @@ builder.Services.AddAuthentication(options =>
 
     options.Events.OnValidatePrincipal = async context =>
     {
-        using (FileStream fs = File.Create("cookie_validation_log.txt"))
+        using (FileStream fs = File.Create("C:\\MyLogs\\Bff\\cookie_validation_log.txt"))
         {
             var accessToken = await context.HttpContext.GetTokenAsync("access_token");
             var data = Encoding.UTF8.GetBytes($"Validating cookie at {DateTime.UtcNow}, Access Token: {accessToken}\n");
