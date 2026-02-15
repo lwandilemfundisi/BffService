@@ -21,7 +21,7 @@ namespace BffService.Api.Controllers
         {
             var authProps = new AuthenticationProperties
             {
-                RedirectUri = returnUrl,
+                RedirectUri = string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl,
             };
 
             return Challenge(authProps, OpenIdConnectDefaults.AuthenticationScheme);
@@ -44,8 +44,6 @@ namespace BffService.Api.Controllers
             string accessToken = await HttpContext.GetTokenAsync("access_token");
             if (!await CookiesHepler.IsTokenActive(accessToken))
             {
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
                 return Unauthorized();
             }
 
