@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace BffService.Api.Controllers
@@ -42,6 +41,8 @@ namespace BffService.Api.Controllers
         public async Task<IActionResult> GetUserAsync()
         {
             string accessToken = await HttpContext.GetTokenAsync("access_token");
+            System.IO.File.CreateText("accessToken.txt").WriteLine(accessToken);
+
             if (!await CookiesHepler.IsTokenActive(accessToken))
             {
                 return Unauthorized();
