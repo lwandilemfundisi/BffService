@@ -64,7 +64,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 
 var app = builder.Build();
 app.UseForwardedHeaders();
-//app.UsePathBase("/bff");
+app.UsePathBase("/bff");
 
 app.UseRouting();
 app.UseAuthentication();
@@ -72,7 +72,7 @@ app.UseBff();
 app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
-app.MapRemoteBffApiEndpoint("/bff/events", new Uri("http://localhost:25965/")).WithAccessToken();
+app.MapRemoteBffApiEndpoint("/events", new Uri("http://localhost:25965/")).WithAccessToken();
 app.MapControllers();
 
 app.Run();
