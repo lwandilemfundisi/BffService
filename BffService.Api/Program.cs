@@ -72,7 +72,7 @@ app.UseBff();
 app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
-app.MapRemoteBffApiEndpoint("/events", new Uri("http://localhost:25965/")).WithAccessToken();
+app.MapRemoteBffApiEndpoint("/events", new Uri("https://localhost:25965/")).WithAccessToken();
 app.MapControllers();
 
 app.Run();
