@@ -64,7 +64,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 
 var app = builder.Build();
 app.UseForwardedHeaders();
-app.UsePathBase("/bff");
+//app.UsePathBase("/bff");
 
 app.UseRouting();
 app.UseAuthentication();
