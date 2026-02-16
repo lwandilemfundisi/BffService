@@ -50,6 +50,7 @@ builder.Services.AddAuthentication(options =>
     options.Scope.Add("openid");
     options.Scope.Add("profile");
     options.Scope.Add("email");
+    options.Scope.Add("eventsApi");
 });
 
 builder.Services.AddAuthorization();
@@ -71,7 +72,7 @@ app.UseBff();
 app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
-//app.MapRemoteBffApiEndpoint("/bff/events", new Uri("http://localhost:25964/")).WithAccessToken();
+app.MapRemoteBffApiEndpoint("/bff/events", new Uri("http://localhost:25965/")).WithAccessToken();
 app.MapControllers();
 
 app.Run();
