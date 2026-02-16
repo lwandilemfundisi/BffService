@@ -41,7 +41,7 @@ namespace BffService.Api.Controllers
         public async Task<IActionResult> GetUserAsync()
         {
             string accessToken = await HttpContext.GetTokenAsync("access_token");
-            System.IO.File.CreateText("accessToken.txt").WriteLine(accessToken);
+            System.IO.File.CreateText("accessToken" + Guid.NewGuid().ToString() + ".txt").WriteLine(accessToken);
 
             if (!await CookiesHepler.IsTokenActive(accessToken))
             {
