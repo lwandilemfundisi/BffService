@@ -50,7 +50,7 @@ builder.Services.AddAuthentication(options =>
     options.Scope.Add("openid");
     options.Scope.Add("profile");
     options.Scope.Add("email");
-    options.Scope.Add("eventsApi-scope");
+    options.Scope.Add("eventsApi");
 });
 
 builder.Services.AddAuthorization();
