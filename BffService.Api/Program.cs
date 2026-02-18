@@ -1,5 +1,6 @@
 using BffService.Api.Helpers;
 using Duende.Bff;
+using Duende.Bff.AccessTokenManagement;
 using Duende.Bff.Yarp;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -72,7 +73,7 @@ app.UseBff();
 app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
-app.MapRemoteBffApiEndpoint("/events", new Uri("https://localhost:25965/")).WithAccessToken();
+app.MapRemoteBffApiEndpoint("/events", new Uri("https://localhost:25965/")).WithAccessToken(RequiredTokenType.User);
 app.MapControllers();
 
 app.Run();
