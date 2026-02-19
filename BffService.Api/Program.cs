@@ -47,6 +47,12 @@ builder.Services.AddAuthentication(options =>
     options.Scope.Add("profile");
     options.Scope.Add("email");
     options.Scope.Add("eventsApi-scope");
+
+    options.Events.OnRedirectToIdentityProvider = context =>
+    {
+        File.WriteAllText("redirect_uri.txt", context.ProtocolMessage.RedirectUri);
+        return Task.CompletedTask;
+    };
 });
 
 builder.Services.AddAuthorization();
