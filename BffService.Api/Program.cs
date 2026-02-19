@@ -66,7 +66,11 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 
 var app = builder.Build();
 app.UseForwardedHeaders();
-//app.UsePathBase("/bff");
+app.Use((ctx, next) =>
+{
+    ctx.Request.PathBase = "/bff";
+    return next();
+});
 
 app.UseRouting();
 app.UseAuthentication();
@@ -85,7 +89,7 @@ app.MapGet("/bff/debug", (HttpContext ctx) =>
         Path = ctx.Request.Path,
         PathBase = ctx.Request.PathBase
     };
-});
+}).RequireAuthorization();
 app.MapControllers();
 
 app.Run();
