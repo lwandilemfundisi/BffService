@@ -50,6 +50,34 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.AddReverseProxy()
+    .LoadFromMemory(
+    new[] 
+    {
+        new Yarp.ReverseProxy.Configuration.RouteConfig()
+        {
+            RouteId = "eventsApi",
+            ClusterId = "eventsApiCluster",
+            Match = new Yarp.ReverseProxy.Configuration.RouteMatch()
+            {
+                Path = "/bff/events/{**catch-all}"
+            },
+            //{
+            //    new Yarp.ReverseProxy.Transforms.PathRemovePrefixTransformFactory("/events")
+            //}
+        }
+    },
+    new[]
+    {
+        new Yarp.ReverseProxy.Configuration.ClusterConfig()
+        {
+            ClusterId = "eventsApiCluster",
+            Destinations = new Dictionary<string, Yarp.ReverseProxy.Configuration.DestinationConfig>()
+            {
+                { "destination1", new Yarp.ReverseProxy.Configuration.DestinationConfig() { Address = "https://localhost:25965/" } }
+            }
+        }
+    });
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
@@ -68,7 +96,7 @@ app.UseBff();
 app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
-app.MapRemoteBffApiEndpoint("/bff/events", new Uri("https://localhost:25965/")).WithAccessToken(RequiredTokenType.User).RequireAuthorization();
+app.MapRemoteBffApiEndpoint("/events", new Uri("https://localhost:25965/")).WithAccessToken(RequiredTokenType.User).RequireAuthorization();
 
 app.MapGet("/bff/debug", (HttpContext ctx) => 
 {
