@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services
-    .AddBff()
+    .AddBff(opts => opts.ManagementBasePath = "/bff")
     .AddRemoteApis();
 
 builder.Services.AddAuthentication(options => 
@@ -28,7 +28,7 @@ builder.Services.AddAuthentication(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.Path = "/bff";
+    options.Cookie.Path = "/";
 })
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => 
 {
