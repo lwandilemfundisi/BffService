@@ -47,12 +47,6 @@ builder.Services.AddAuthentication(options =>
     options.Scope.Add("profile");
     options.Scope.Add("email");
     options.Scope.Add("eventsApi-scope");
-
-    options.Events.OnRedirectToIdentityProvider = context =>
-    {
-        context.ProtocolMessage.RedirectUri = "https://localhost:446/bff/signin-oidc";
-        return Task.CompletedTask;
-    };
 });
 
 builder.Services.AddAuthorization();
