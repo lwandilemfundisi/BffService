@@ -1,15 +1,10 @@
-using BffService.Api.Helpers;
 using Duende.Bff;
 using Duende.Bff.AccessTokenManagement;
 using Duende.Bff.Yarp;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.OpenApi;
-using System.Text;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,7 +68,7 @@ app.UseBff();
 app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
-app.MapRemoteBffApiEndpoint("/events", new Uri("https://localhost:25965/")).WithAccessToken(RequiredTokenType.User);
+app.MapRemoteBffApiEndpoint("/events", new Uri("https://localhost:25965/")).WithAccessToken(RequiredTokenType.User).RequireAuthorization();
 app.MapControllers();
 
 app.Run();

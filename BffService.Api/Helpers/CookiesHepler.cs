@@ -6,18 +6,17 @@ namespace BffService.Api.Helpers
 {
     public static class CookiesHepler
     {
-        public static async Task<bool> IsTokenActive(string accessToken)
+        public static async Task<bool> IsTokenActive(HttpClient httpClient, string accessToken)
         {
-            var introspectionClient = new HttpClient();
             var introspectionRequest = new HttpRequestMessage(HttpMethod.Post, "https://localhost:8443/realms/OnlineTicketSalesRealm/protocol/openid-connect/token/introspect");
             var authToken = Convert.ToBase64String(Encoding.ASCII.GetBytes("OnlineTicketSalesBff:nluXYrk1ECM08fYYq9HOY1TBPPUaGXME"));
-            introspectionClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authToken);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authToken);
 
             introspectionRequest.Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
                 { "token", accessToken }
             });
-            var response = await introspectionClient.SendAsync(introspectionRequest);
+            var response = await httpClient.SendAsync(introspectionRequest);
             if (!response.IsSuccessStatusCode)
             {
                 return false;
