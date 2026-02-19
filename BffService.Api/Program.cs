@@ -50,7 +50,7 @@ builder.Services.AddAuthentication(options =>
 
     options.Events.OnRedirectToIdentityProvider = context =>
     {
-        //context.ProtocolMessage.RedirectUri = "https://localhost:444/bff/signin-oidc";
+        context.ProtocolMessage.RedirectUri = "https://localhost:444/bff/signin-oidc";
         return Task.CompletedTask;
     };
 });
@@ -75,6 +75,17 @@ app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
 app.MapRemoteBffApiEndpoint("/bff/events", new Uri("https://localhost:25965/")).WithAccessToken(RequiredTokenType.User).RequireAuthorization();
+
+app.MapGet("/bff/debug", (HttpContext ctx) => 
+{
+    return new 
+    {
+        Authenticated = ctx.User.Identity?.IsAuthenticated,
+        Name = ctx.User.Identity?.Name,
+        Path = ctx.Request.Path,
+        PathBase = ctx.Request.PathBase
+    };
+});
 app.MapControllers();
 
 app.Run();
