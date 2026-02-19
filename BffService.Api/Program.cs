@@ -50,7 +50,7 @@ builder.Services.AddAuthentication(options =>
 
     options.Events.OnRedirectToIdentityProvider = context =>
     {
-        File.WriteAllText("redirect_uri.txt", context.ProtocolMessage.RedirectUri);
+        context.ProtocolMessage.RedirectUri = "https://localhost:444/bff/signin-oidc";
         return Task.CompletedTask;
     };
 });
