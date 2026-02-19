@@ -28,7 +28,7 @@ builder.Services.AddAuthentication(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.SameSite = SameSiteMode.None;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-    options.Cookie.Path = "/";
+    options.Cookie.Path = "/bff";
 })
 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => 
 {
@@ -60,7 +60,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 
 var app = builder.Build();
 app.UseForwardedHeaders();
-app.UsePathBase("/bff");
+//app.UsePathBase("/bff");
 
 app.UseRouting();
 app.UseAuthentication();
@@ -68,7 +68,7 @@ app.UseBff();
 app.UseAuthorization();
 
 app.MapBffManagementEndpoints();
-app.MapRemoteBffApiEndpoint("/events", new Uri("https://localhost:25965/")).WithAccessToken(RequiredTokenType.User).RequireAuthorization();
+app.MapRemoteBffApiEndpoint("/bff/events", new Uri("https://localhost:25965/")).WithAccessToken(RequiredTokenType.User).RequireAuthorization();
 app.MapControllers();
 
 app.Run();
