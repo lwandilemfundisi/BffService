@@ -98,7 +98,7 @@ app.UseAuthorization();
 app.MapBffManagementEndpoints();
 app.MapRemoteBffApiEndpoint("/events", new Uri("https://localhost:25965/")).RequireAuthorization().WithAccessToken(RequiredTokenType.User);
 
-app.MapGet("/bff/debug", (HttpContext ctx) => 
+app.MapGet("/debug", (HttpContext ctx) => 
 {
     return new 
     {
